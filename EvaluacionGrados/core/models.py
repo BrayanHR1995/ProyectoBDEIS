@@ -27,17 +27,15 @@ class User(AbstractUser):
 class Estudiante(models.Model):
     codigo_del_estudiante = models.CharField(max_length=10, primary_key=True, null=False)
     cedula_del_estudiante = models.CharField(max_length=10, unique=True, null=False)
-    identificacion = models.CharField(max_length=20, null=False, unique=True)
     nombres_del_estudiante = models.CharField(max_length=50, null=False)
     apellidos_del_estudiante = models.CharField(max_length=50, null=False)
     correo = models.EmailField(null=False, unique=True)
     fecha_nacimiento = models.DateField(null=True,  blank=True)
-    fecha_sustentacion = models.DateField(null=True,  blank=True)
     programa = models.ForeignKey(Programa, null=False, on_delete=models.CASCADE)
     
 
     def __str__(self):
-        return (self.nombres+' '+self.apellidos).encode("utf-8")
+        return (self.nombres_del_estudiante+' '+self.apellidos_del_estudiante).encode("utf-8")
 
 
 class OpcionDeGrado(models.Model):
