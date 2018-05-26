@@ -42,6 +42,10 @@ class UserAdmin(CustomUserAdmin):
         'last_login',
         'date_joined'
     ]
+    search_fields = [
+      'first_name'
+    ] 
+    
     
 class EvaluacionInline(admin.TabularInline):
     model = EvaluacionProyecto
@@ -49,8 +53,32 @@ class EvaluacionInline(admin.TabularInline):
 
 class TrabajoGradoAdmin(admin.ModelAdmin):
     inlines = [EvaluacionInline]
+    list_filter =[
+      'opcion_de_grado' ,
+      'programa'
+    ] 
+    raw_id_fields =[
+      'opcion_de_grado' ,
+      'programa',
+      'estudiante_1',
+      'estudiante_2',
+      'jurado_1',
+      'jurado_2',
+      'director',
+      'codirector'
+    ] 
+    search_fields = [
+      'nombre_trabajo_de_grado'
+    ] 
 class EvaluacionAdmin(admin.ModelAdmin):
     list_filter = ['trabajo_grado']
+    list_filter =[
+      'activo_para_evaluar'  
+    ] 
+    list_display = [
+        'trabajo_grado',
+        'resultado_consolidado'
+    ]
 
 
 

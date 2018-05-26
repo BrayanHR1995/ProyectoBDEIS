@@ -52,15 +52,26 @@ class TrabajoGrado(models.Model):
     estudiante_1 = models.ForeignKey(Estudiante, related_name="%(class)s_estudiante1", on_delete=models.CASCADE)
     estudiante_2 = models.ForeignKey(Estudiante, null=True, blank=True, related_name="%(class)s_estudiante2", on_delete=models.CASCADE)
     opcion_de_grado = models.ForeignKey(OpcionDeGrado, null=False, on_delete=models.CASCADE)
-    nombre_trabajo_de_grado = models.CharField(max_length=50, null=False, unique=True)
+    nombre_trabajo_de_grado = models.CharField(max_length=500, null=False, unique=True)
     programa = models.ForeignKey(Programa, null=False, on_delete=models.CASCADE)
     director = models.ForeignKey(User, null=False, related_name="%(class)s_director", on_delete=models.CASCADE)
     codirector = models.ForeignKey(User, null=True, blank=True, related_name="%(class)s_codirector", on_delete=models.CASCADE)
     jurado_1 = models.ForeignKey(User, null=False, related_name="%(class)s_jurado1", on_delete=models.CASCADE)
     jurado_2 = models.ForeignKey(User, null=True, blank=True, related_name="%(class)s_jurado2", on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.nombre_trabajo_de_grado.encode("utf-8")
+    def __unicode__(self):
+        id=self.id
+        
+        valor=EvaluacionProyecto.objects.filter(trabajo_grado=id)
+        for sol in valor:
+            
+            if sol.activo_para_evaluar==True:
+                
+                return unicode(self.nombre_trabajo_de_grado) + " :    " +"Trabajo No Evaluado"
+            else:
+               
+                return unicode(self.nombre_trabajo_de_grado) + " :    " + "Trabajo Evaluado"
+
 
 class CalificacionProyecto(models.Model):
     id_calificacion_proyecto = models.CharField(max_length=10, primary_key=True, null=False)
@@ -91,5 +102,5 @@ class EvaluacionProyecto(models.Model):
     resultado_consolidado = models.ForeignKey(CalificacionProyecto,  null=True, blank=True, related_name="%(class)s_resultado_consolidado", on_delete=models.CASCADE)
 
 
-    def __str__(self):
-        return "Evaluacion del proyecto: "+str(self.trabajo_grado).encode("utf-8")
+    def __unicode__(self):
+        return "Evaluacion del proyecto: "+ unicode(self.trabajo_grado.nombre_trabajo_de_grado) 
